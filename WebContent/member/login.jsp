@@ -55,18 +55,18 @@ function memberDel(member){
 	<c:if test="${sessionScope.admin==1}">
 			 <h2>회원전용 페이지</h2>
 	   <form action="Logout.jsp">안녕하세요 ${sessionScope.userid}님 반갑습니다.<br>
-	   <input type="submit" value="로그아웃">
-	   <input type="button" value="회원변경" onclick="location.href='memberView.jsp'">
-	   <input type="button" value="회원탈퇴" onclick="memberDelete.jsp">
+	   <input type="submit" class="btn btn-primary btn-sm"  value="로그아웃">
+	   <input type="button" class="btn btn-primary btn-sm"  value="회원변경" onclick="location.href='memberView.jsp'">
+	   <input type="button" class="btn btn-primary btn-sm"  value="회원탈퇴" onclick="memberDelete.jsp">
 	   </form>
 	</c:if>
 	<c:if test="${sessionScope.admin==2}">
 			 <h2>관리자전용 페이지</h2>
 	   <form action="Logout.jsp">안녕하세요 ${sessionScope.userid}님 반갑습니다.<br>
 	   <input type="submit" value="로그아웃">
-	   <input type="button" value="회원변경" onclick="location.href='memberView.jsp?'">
-	   <input type="button" value="회원탈퇴" onclick="memberDelete.jsp">
-	   <input type="button" value="리스트보기" onclick="location.href='list.do'">
+	   <input type="button" class="btn btn-primary btn-sm"  value="회원변경" onclick="location.href='memberView.jsp?'">
+	   <input type="button" class="btn btn-primary btn-sm"  value="회원탈퇴" onclick="memberDelete.jsp">
+	   <input type="button" class="btn btn-primary btn-sm"  value="리스트보기" onclick="location.href='list.do'">
 	   </form>
 	</c:if>
 </c:if>
