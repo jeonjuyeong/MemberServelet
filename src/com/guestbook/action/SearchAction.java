@@ -15,16 +15,16 @@ import com.guestbook.model.GuestDTO;
 import com.guestbook.model.PageDTO;
 
 /**
- * Servlet implementation class GuestList
+ * Servlet implementation class SearchAction
  */
-@WebServlet("/guestbook/list")
-public class GuestList extends HttpServlet {
+@WebServlet("/guestbook/search")
+public class SearchAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GuestList() {
+    public SearchAction() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,19 +33,19 @@ public class GuestList extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		request.setCharacterEncoding("utf-8");
 		GuestDAO dao = new GuestDAO();
-		
 		//paging
 	      String pageNum = request.getParameter("pageNum")==null?"1":request.getParameter("pageNum");
+	      String field=request.getParameter("field");
+	      String word= request.getParameter("word");
 	      PageDTO p = new PageDTO();
 	      int currentpage = Integer.parseInt(pageNum);
 	      int pageSize = 5;
 	      int startRow = (currentpage-1)*pageSize+1; //현 페이지  시작 행
 	      int endRow = currentpage * pageSize; //현 페이지 끝행
-	      ArrayList<GuestDTO> arr=dao.guestList(startRow,endRow);
-	      int count = dao.guestCount();
+	      ArrayList<GuestDTO> arr=dao.guestlist(field,word,startRow,endRow);
+	      int count = dao.guestCount(field,word);
 	      int totpage = count/pageSize+(count%pageSize==0?0:1);
 	      int blockpage =3; // [이전] 1 2 3 [다음]
 	      int startpage = ((currentpage-1)/blockpage)*blockpage+1;
@@ -63,7 +63,9 @@ public class GuestList extends HttpServlet {
 		request.setAttribute("p", p);
 		request.setAttribute("lists", arr);
 		request.setAttribute("count", count);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("guestList.jsp");
+		request.setAttribute("field", field);
+		request.setAttribute("word", word);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("searchResult.jsp");
 		dispatcher.forward(request, response);
 	}
 

@@ -50,10 +50,22 @@ body{
 				beforeSend:showRequest
 			});
 		});
-		getData();
-	});
-	function getData(){
-		$("#result").load("list",function(data){
+	//검색
+	$("#btnSearch").click(function(){
+			getSearch(1,$("#field").val(),$("#word").val());
+		});
+		getData(1);
+});
+	function getSearch(pageNum,field,word){
+		$("#result").load("search",{"pageNum":pageNum,"field":field,"word":word},
+			function(data){
+				$('#result').html(data);
+		})
+	};
+	//페이징
+	function getData(pageNum){
+		$("#result").load("list",{"pageNum":pageNum},function(data){
+			
 			$("#result").html(data);
 		});
 	};
@@ -91,12 +103,21 @@ function fview(num){
 </script>
 
 <body>
+<div align = "center">
+<c:if test="${sessionScope.m!=null}">
+	${sessionScope.m.userid}(${sessionScope.m.name})님 환영합니다.<a href="logout">로그아웃</a>
+</c:if>
+<c:if test="${sessionScope.m==null}">
+	<a href="login.jsp">로그인</a>
+</c:if>
+<br><br>
+</div>
 <form action="create">
 <div align="center">
 	<table id="blueone">
 	<tr>
 		<td>글쓴이</td>
-		<td><input type ="text" id="name" size=20 name="name" onkeyup="textCount(this,'namecount')">
+		<td><input type ="text" value="${sessionScope.m.name}"  id="name" size=20 name="name" onkeyup="textCount(this,'namecount')">
 		*20글자이내
 		(<span id="namecount" style="color:red;">0</span>)
 		</td>
@@ -126,8 +147,17 @@ function fview(num){
 	</table>
 	</div>
 </form>
-
 <br><br><br><br>
+<div align='right'>
+	<form action="search" name="search" id="search">
+		<select name ="field" id ="field">
+		<option value="name">이름</option>
+		<option value="content">내용</option>
+		</select>
+	</form>
+	<input type='text' name="word" id="word">
+	<input type='button' value='찾기' id='btnSearch'>
+</div>
 <!-- 방명록 출력부분 -->
 <div id="result" align="center"></div>
 <!-- 상세보기 출력부분 -->

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
 <style>  
 body{
 	padding : 30px;
@@ -52,17 +53,17 @@ body{
 <div align ="center">
 	<!-- 이전 -->
 	<c:if test="${p.startpage>p.blockpage}">
-		<a href="javascript:getData(${p.startpage-p.blockpage })">[이전]</a>
+		<a href="javascript:getSearch(${p.startpage-p.blockpage },'${field }','${word }')">[이전]</a>
 	</c:if>
 	<c:forEach begin="${p.startpage}" end="${p.endpage}" var="i">
 		<c:if test="${i==p.currentpage}">
 			[${i}]
 		</c:if>
 		<c:if test="${i!=p.currentpage}">
-			<a href="javascript:getData(${i})">[${i}]</a>
+			<a href="javascript:getSearch(${i},'${field }','${word }')">[${i}]</a>
 		</c:if>
 	</c:forEach>
 	<c:if test="${p.startpage>p.blockpage}">
-		<a href="javascript:getData(${p.endpage+1})">[이후]</a>
+		<a href="javascript:getSearch(${p.endpage+1},'${field }','${word }')">[다음]</a>
 	</c:if>
 </div>

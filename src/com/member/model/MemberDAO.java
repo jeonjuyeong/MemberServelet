@@ -39,6 +39,7 @@ public class MemberDAO {
 		         e.printStackTrace();
 		      }
 		}
+
 	public String idcheck(String id) {
 		Connection con =null;
 		Statement st = null;
@@ -189,16 +190,22 @@ public class MemberDAO {
 		}
 		return arr;
 	}
-	public ArrayList<MemberDTO> memberList(){
+	public ArrayList<MemberDTO> memberList(int startRow,int endRow){
 		Connection con = null;
-		Statement st = null;
+		PreparedStatement ps= null;
 		ResultSet rs =null;
 		arr = new ArrayList<>();
 		try {
 			con = getConnection();
-			st = con.createStatement();
-			String sql = "select * from memberdb";
-			rs = st.executeQuery(sql);
+			String sql = "select * from(select rownum rn,aa.* from(select * from guestbook order by num desc)aa)"
+	                 + "where rn >= ? and rn <= ? ";
+
+			  ps = con.prepareStatement(sql);
+	           ps.setInt(1, startRow);
+	           ps.setInt(2, endRow);
+	           
+	           rs = ps.executeQuery();
+
 			while (rs.next()) {
 				MemberDTO mb = new MemberDTO();
 				mb.setName(rs.getString("name"));
@@ -215,7 +222,7 @@ public class MemberDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			closeCon(con, st,rs);
+			closeCon(con, ps,rs);
 		}
 		return arr;
 	}
